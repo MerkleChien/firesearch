@@ -3,7 +3,7 @@ import { ChatOpenAI } from "@langchain/openai";
 import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 import { FirecrawlClient } from './firecrawl';
 import { ContextProcessor } from './context-processor';
-import { SEARCH_CONFIG, MODEL_CONFIG } from './config';
+import { SEARCH_CONFIG, MODEL_CONFIG, API_CONFIG } from './config';
 
 // Event types remain the same for frontend compatibility
 export type SearchPhase = 
@@ -172,16 +172,19 @@ export class LangGraphSearchEngine {
     this.firecrawl = firecrawl;
     this.contextProcessor = new ContextProcessor();
     
-    const apiKey = process.env.OPENAI_API_KEY;
+    const apiKey = API_CONFIG.OPENAI_API_KEY;
     if (!apiKey) {
       throw new Error('OPENAI_API_KEY environment variable is not set');
     }
     
-    // Initialize LangChain models
+    // Initialize LangChain models with custom baseURL support
     this.llm = new ChatOpenAI({
       modelName: MODEL_CONFIG.FAST_MODEL,
       temperature: MODEL_CONFIG.TEMPERATURE,
       openAIApiKey: apiKey,
+      configuration: {
+        baseURL: API_CONFIG.OPENAI_BASE_URL,
+      },
     });
     
     this.streamingLlm = new ChatOpenAI({
@@ -189,6 +192,9 @@ export class LangGraphSearchEngine {
       temperature: MODEL_CONFIG.TEMPERATURE,
       streaming: true,
       openAIApiKey: apiKey,
+      configuration: {
+        baseURL: API_CONFIG.OPENAI_BASE_URL,
+      },
     });
 
     // Enable checkpointing if requested
