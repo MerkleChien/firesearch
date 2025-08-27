@@ -1,15 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import FirecrawlApp from '@mendable/firecrawl-js';
+import { API_CONFIG } from './config';
 
 export class FirecrawlClient {
   private client: FirecrawlApp;
 
   constructor(providedApiKey?: string) {
-    const apiKey = providedApiKey || process.env.FIRECRAWL_API_KEY;
+    const apiKey = providedApiKey || API_CONFIG.FIRECRAWL_API_KEY;
     if (!apiKey) {
       throw new Error('FIRECRAWL_API_KEY is required - either provide it or set it as an environment variable');
     }
-    this.client = new FirecrawlApp({ apiKey });
+    
+    // Initialize FirecrawlApp with custom baseURL support
+    this.client = new FirecrawlApp({ 
+      apiKey,
+      apiUrl: API_CONFIG.FIRECRAWL_BASE_URL
+    });
   }
 
   async scrapeUrl(url: string, timeoutMs: number = 15000) {
