@@ -34,6 +34,47 @@ Comprehensive web research powered by [Firecrawl](https://www.firecrawl.dev/) an
 3. Install dependencies: `npm install` or `yarn install`
 4. Run the development server: `npm run dev` or `yarn dev`
 
+### Custom API Endpoints (可选)
+
+如果您需要使用自定义的API端点（如代理服务器或私有部署），可以在环境变量中配置：
+
+```bash
+# 自定义OpenAI API端点
+OPENAI_BASE_URL=https://your-proxy.com/v1
+
+# 自定义Firecrawl API端点
+FIRECRAWL_BASE_URL=https://your-firecrawl-instance.com
+```
+
+**默认值：**
+- OpenAI: `https://api.openai.com/v1`
+- Firecrawl: `https://api.firecrawl.dev`
+
+如果不设置这些环境变量，系统将自动使用官方服务端点。参考 `.env.example` 文件查看完整的配置示例。
+
+### 自定义模型配置 (可选)
+
+您可以通过环境变量自定义使用的OpenAI模型：
+
+```bash
+# 快速模型（用于搜索规划和快速操作）
+OPENAI_FAST_MODEL=gpt-4o-mini
+
+# 高质量模型（用于最终合成和总结）
+OPENAI_QUALITY_MODEL=gpt-4o
+```
+
+**默认模型：**
+- 快速模型: `gpt-4o-mini`
+- 高质量模型: `gpt-4o`
+
+**其他可用模型示例：**
+- `gpt-3.5-turbo` - 更经济的选择
+- `gpt-4-turbo` - 平衡性能和成本
+- `gpt-4o` - 最新的高性能模型
+
+如果不设置这些环境变量，系统将使用默认模型。模型配置支持向后兼容，确保现有部署不受影响。
+
 ## How It Works
 
 ### Architecture Overview
