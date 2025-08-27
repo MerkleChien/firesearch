@@ -33,9 +33,20 @@ export const UI_CONFIG = {
   MESSAGE_CYCLE_DELAY: 2000,     // Delay for cycling through messages (ms)
 } as const;
 
-// Model Configuration
+// Model Configuration - 支持通过环境变量自定义模型
 export const MODEL_CONFIG = {
-  FAST_MODEL: "gpt-4o-mini",     // Fast model for quick operations
-  QUALITY_MODEL: "gpt-4o",       // High-quality model for final synthesis
+  FAST_MODEL: process.env.OPENAI_FAST_MODEL || "gpt-4o-mini",     // Fast model for quick operations
+  QUALITY_MODEL: process.env.OPENAI_QUALITY_MODEL || "gpt-4o",   // High-quality model for final synthesis
   TEMPERATURE: 0,                // Model temperature (0 = deterministic)
+} as const;
+
+// API Configuration - 支持自定义BaseURL
+export const API_CONFIG = {
+  // OpenAI配置
+  OPENAI_BASE_URL: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
+  OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+  
+  // Firecrawl配置
+  FIRECRAWL_BASE_URL: process.env.FIRECRAWL_BASE_URL || 'https://api.firecrawl.dev',
+  FIRECRAWL_API_KEY: process.env.FIRECRAWL_API_KEY,
 } as const;
